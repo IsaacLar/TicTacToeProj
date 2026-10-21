@@ -31,28 +31,8 @@ const buttonPositions = [
 
 const Game = Gameboard("Sum1", "Sum2");
 
-function assignValue(position){
-    var buttonClicked = document.getElementById(position);
-    var buttonPos = buttonPositions.findIndex(pos => pos == position);
-    if (Game.getPlayer()){
-        buttonClicked.textContent = "X";
-        Game.gameboard[buttonPos] = "X";
-        Game.switchPlayer();
-        Game.incrementTurns();
-
-        if (Game.turnsTaken == 3){
-            enableWinCheck()
-        }
-
-    } else {
-        buttonClicked.textContent = "O";
-        Game.gameboard[buttonPos] = "O";
-        Game.switchPlayer();
-    }
-
-    //Assess all possible win conditions
-    if (Game.winCheck()){
-        //Check direct centre tile for horizontal, vertical, and both diagonal win conditions
+function checkForWinner(){
+    //Check direct centre tile for horizontal, vertical, and both diagonal win conditions
         if (Game.gameboard[4] == "X" || Game.gameboard[4] == "O"){
             //Horizontal win
             if (Game.gameboard[3] == Game.gameboard[4] && Game.gameboard[4] == Game.gameboard[5]){
@@ -94,7 +74,30 @@ function assignValue(position){
                 console.log("Win");
             }
         }
+}
 
+function assignValue(position){
+    var buttonClicked = document.getElementById(position);
+    var buttonPos = buttonPositions.findIndex(pos => pos == position);
+    if (Game.getPlayer()){
+        buttonClicked.textContent = "X";
+        Game.gameboard[buttonPos] = "X";
+        Game.switchPlayer();
+        Game.incrementTurns();
+
+        if (Game.turnsTaken == 3){
+            enableWinCheck()
+        }
+
+    } else {
+        buttonClicked.textContent = "O";
+        Game.gameboard[buttonPos] = "O";
+        Game.switchPlayer();
+    }
+
+    //Assess all possible win conditions
+    if (Game.winCheck()){
+        checkForWinner();
     }
     buttonClicked.disabled = true;
 }
