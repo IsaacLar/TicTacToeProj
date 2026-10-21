@@ -10,21 +10,31 @@ function Gameboard(name1, name2){
     //Flips which players turn it is
     const switchPlayer = () => {x_playing = !x_playing};
 
-    const gameboard = [];
+    const gameboard = ['-','-','-','-','-','-','-','-','-'];
 
-    return {getPlayer, switchPlayer};
+    return {getPlayer, switchPlayer, gameboard};
 }
+
+const buttonPositions = [
+    'top_left', 'top_mid', 'top_right',
+    'mid_left', 'mid_mid', 'mid_right',
+    'bottom_left', 'bottom_mid', 'bottom_right'
+]
 
 const Game = Gameboard("Sum1", "Sum2");
 
 function assignValue(position){
     var buttonClicked = document.getElementById(position);
+    var buttonPos = buttonPositions.findIndex(pos => pos == position);
     if (Game.getPlayer()){
         buttonClicked.textContent = "X";
+        Game.gameboard[buttonPos] = "X";
         Game.switchPlayer();
     } else {
         buttonClicked.textContent = "O";
+        Game.gameboard[buttonPos] = "O";
         Game.switchPlayer();
     }
     buttonClicked.disabled = true;
+    console.log(Game.gameboard);
 }
