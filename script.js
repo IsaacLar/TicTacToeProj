@@ -31,24 +31,56 @@ const buttonPositions = [
 
 const Game = Gameboard("Sum1", "Sum2");
 
+//Set the disabled state of all buttons - True, all buttons disabled. False, all buttons enabled
+function setButtonDisabledState(state){
+    document.getElementById("top_left").disabled = state;
+    document.getElementById("top_mid").disabled = state;
+    document.getElementById("top_right").disabled = state;
+
+    document.getElementById("mid_left").disabled = state;
+    document.getElementById("mid_mid").disabled = state;
+    document.getElementById("mid_right").disabled = state;
+
+    document.getElementById("bottom_left").disabled = state;
+    document.getElementById("bottom_mid").disabled = state;
+    document.getElementById("bottom_right").disabled = state;
+}
+
+function gameWon(winner){
+    //Disable all remaining buttons
+    setButtonDisabledState(true);
+
+    //Display win message
+    var winningText = document.createElement("p");
+    winningText.id = "winningText";
+    if (winner == "X"){
+        winningText.textContent = "Crosses wins!";
+    } else {
+        winningText.textContent = "Noughts wins!";
+    }
+    document.getElementById("winningTextPlaceholder").appendChild(winningText);
+
+    //Display play again button
+}
+
 function checkForWinner(){
     //Check direct centre tile for horizontal, vertical, and both diagonal win conditions
     if (Game.gameboard[4] == "X" || Game.gameboard[4] == "O"){
         //Horizontal win
         if (Game.gameboard[3] == Game.gameboard[4] && Game.gameboard[4] == Game.gameboard[5]){
-            console.log("WIn");
+            gameWon(Game.gameboard[4]);
         }
         //Vertical win
         if (Game.gameboard[1] == Game.gameboard[4] && Game.gameboard[4] == Game.gameboard[7]){
-            console.log("Win");
+            gameWon(Game.gameboard[4]);
         }
         //Diagonal top left to bottom right
         if (Game.gameboard[0] == Game.gameboard[4] && Game.gameboard[4] == Game.gameboard[8]){
-            console.log("WIn");
+            gameWon(Game.gameboard[4]);
         }
         //Diagonal bottom left to top right
         if (Game.gameboard[2] == Game.gameboard[4] && Game.gameboard[4] == Game.gameboard[6]){
-            console.log("Win");
+            gameWon(Game.gameboard[4]);
         }
     }
 
@@ -56,22 +88,22 @@ function checkForWinner(){
     if (Game.gameboard[0] == "X" || Game.gameboard[0] == "O"){
         //Horizontal win
         if (Game.gameboard[0] == Game.gameboard[1] && Game.gameboard[1] == Game.gameboard[2]){
-            console.log("Win");
+            gameWon(Game.gameboard[0]);
         }
         //Vertical win
         if (Game.gameboard[0] == Game.gameboard[3] && Game.gameboard[3] == Game.gameboard[6]){
-            console.log("Win");
+            gameWon(Game.gameboard[0]);
         }
     }
     //Check bottom right tile for horizontal and vertical win conditions
     if (Game.gameboard[8] == "X" || Game.gameboard[8] == "O"){
         //Horizontal win
         if (Game.gameboard[6] == Game.gameboard[7] && Game.gameboard[7] == Game.gameboard[8]){
-            console.log("WIN");
+            gameWon(Game.gameboard[8]);
         }
         //Vertical Win
         if (Game.gameboard[2] == Game.gameboard[5] && Game.gameboard[5] == Game.gameboard[8]){
-            console.log("Win");
+            gameWon(Game.gameboard[8]);
         }
     }
 }
