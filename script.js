@@ -20,7 +20,13 @@ function Gameboard(name1, name2){
 
     const gameboard = ['','','','','','','','',''];
 
-    return {getPlayer, switchPlayer, incrementTurns, gameboard, winCheck};
+    const resetGame = () => {
+        x_playing = true;
+        turnsTaken = 0;
+        checkForWin = false;
+    }
+
+    return {getPlayer, switchPlayer, incrementTurns, gameboard, winCheck, resetGame};
 }
 
 const buttonPositions = [
@@ -46,6 +52,35 @@ function setButtonDisabledState(state){
     document.getElementById("bottom_right").disabled = state;
 }
 
+function resetButtons(){
+    document.getElementById("top_left").textContent = "";
+    document.getElementById("top_mid").textContent = "";
+    document.getElementById("top_right").textContent = "";
+
+    document.getElementById("mid_left").textContent = "";
+    document.getElementById("mid_mid").textContent = "";
+    document.getElementById("mid_right").textContent = "";
+
+    document.getElementById("bottom_left").textContent = "";
+    document.getElementById("bottom_mid").textContent = "";
+    document.getElementById("bottom_right").textContent = "";
+}
+
+function startNewGame(){
+    setButtonDisabledState(false);
+    resetButtons();
+    Game.resetGame();
+
+    for (let i = 0; i < 9; i++){
+        Game.gameboard[i] = '';
+    }
+
+    //Game.gameboard.forEach(item => item='')
+
+    document.getElementById("winningText").remove();
+    document.getElementById("playAgainButton").remove();
+}
+
 function gameWon(winner){
     //Disable all remaining buttons
     setButtonDisabledState(true);
@@ -61,6 +96,11 @@ function gameWon(winner){
     document.getElementById("winningTextPlaceholder").appendChild(winningText);
 
     //Display play again button
+    var playAgainButton = document.createElement("button");
+    playAgainButton.textContent = "Play again";
+    playAgainButton.id = "playAgainButton";
+    playAgainButton.onclick = startNewGame;
+    document.getElementById("winningTextPlaceholder").appendChild(playAgainButton);
 }
 
 function checkForWinner(){
